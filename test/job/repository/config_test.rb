@@ -43,4 +43,3 @@ class JobRepositoryConfigTest < Test::Unit::TestCase
     assert_equal 'bundle exec rake', config.script
   end
 end
-
