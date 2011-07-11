@@ -28,7 +28,7 @@ module Travis
           announce "[builds.dispatcher] Handling #{deserialized.inspect}"
 
           # TODO: defer it
-          Workers::Amqp.new(metadata, deserialized).work!
+          Workers::Amqp.new(metadata, deserialized, @reporting_channel).work!
           announce "[builds.dispatcher] Done"
           metadata.ack
           announce "[builds.dispatcher] Acknowledged"

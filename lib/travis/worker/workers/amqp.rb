@@ -10,12 +10,12 @@ module Travis
 
         attr_reader :payload, :job, :reporter
 
-        def initialize(metadata, payload)
+        def initialize(metadata, payload, reporting_channel)
           @payload  = payload.deep_symbolize_keys
           @metadata = metadata
           @job      = job_type.new(payload)
           # TODO
-          @reporter = Reporter::Amqp.new(job.build, AMQP::Channel.new(Travis::Worker.amqp_connection))
+          @reporter = Reporter::Amqp.new(job.build, reporting_channel)
           job.observers << reporter
         rescue VmNotFound, Errno::ECONNREFUSED
           puts "#{$!.class.name}: #{$!.message}", $@
