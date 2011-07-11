@@ -48,7 +48,16 @@ module Travis
         announce "[boot] Connected to an AMQP broker at #{connection.broker_endpoint} using username #{connection.username}"
         @connection                    = connection
         Travis::Worker.amqp_connection = connection
+        @connection.on_error do |conn, connection_close|
+          puts <<-ERR
+      Handling a connection-level exception.
 
+      AMQP class id : #{connection_close.class_id},
+      AMQP method id: #{connection_close.method_id},
+      Status code   : #{connection_close.reply_code}
+      Error message : #{connection_close.reply_text}
+      ERR
+        end
         self.open_channels
         self.initialize_dispatcher
       end # on_connection(connection)
