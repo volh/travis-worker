@@ -19,7 +19,7 @@ module Travis
         def receiver
           AMQP.start(:vhost => "travis") do |connection|
             ch       = AMQP::Channel.new(connection)
-            ch.queue("reporting.progress", :auto_delete => true).subscribe do |metadata, payload|
+            ch.queue("reporting.progress", :auto_delete => false, :durable => true).subscribe do |metadata, payload|
               puts "[#{metadata.type}] #{payload}"
             end
           end
