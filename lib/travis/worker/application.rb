@@ -76,8 +76,11 @@ module Travis
 
       def open_channels
         @heartbeat_channel    = AMQP::Channel.new(@connection, :auto_recovery => true).prefetch(1)
+        announce "[boot] Worker state channel id = #{@heartbeat_channel.id}"
         @commands_channel     = AMQP::Channel.new(@connection, :auto_recovery => true).prefetch(1)
+        announce "[boot] Commands channel id = #{@commands_channel.id}"
         @reporting_channel    = AMQP::Channel.new(@connection, :auto_recovery => true).prefetch(1)
+        announce "[boot] Reporting channel id = #{@reporting_channel.id}"
       end # open_channels
 
       def initialize_dispatcher
