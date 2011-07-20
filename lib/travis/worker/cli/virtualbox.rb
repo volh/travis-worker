@@ -13,13 +13,13 @@ module Travis
           if yes? 'Do you really want to completely reset Virtualbox? (All existing VMs will be wiped out.)'
             run <<-sh
               rm -rf ~/.VirtualBox/
-              rm -rf ~/VirtualBox\ VMs/
+              rm -rf ~/VirtualBox\\ VMs/
               rm -rf ~/.vagrant
-              rm .vagrant
+              rm -f  .vagrant
 
-              killall VBoxXPCOMIPCD
-              killall VBoxSVC
-              killall VBoxHeadless
+              killall VBoxXPCOMIPCD > /dev/null 2>&1
+              killall VBoxSVC       > /dev/null 2>&1
+              killall VBoxHeadless  > /dev/null 2>&1
             sh
           end
         end

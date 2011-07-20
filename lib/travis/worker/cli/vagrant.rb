@@ -25,12 +25,33 @@ module Travis
           download
           add_box from, :to => 'base'
           exit unless up 'base'
-          package 'base'
+          package_box 'base'
 
           1.upto(config.count) do |num|
             add_box 'base', :to => "worker-#{num}"
           end
           up
+        end
+
+        desc 'package', 'Package the base.box'
+        def package
+          exit unless up 'base', :provision => true
+          package_box 'base'
+        end
+
+        desc 'import', 'Import the base.box to worker boxes'
+        def import
+          1.upto(config.count) do |num|
+            add_box 'base', :to => "worker-#{num}"
+          end
+        end
+
+        desc 'remove', 'Remove the worker boxes'
+        def remove
+          1.upto(config.count) do |num|
+            destroy "worker-#{num}"
+            remove_box "worker-#{num}"
+          end
         end
 
         protected
@@ -55,11 +76,20 @@ module Travis
             run "vagrant box add #{options[:to] || name} #{name}.box"
           end
 
-          def up(name = nil)
-            run "vagrant up #{name}"
+          def remove_box(name)
+            run "vagrant box remove #{name}"
           end
 
-          def package(name)
+          def up(name = nil, options = { :provision => false })
+            ENV['WITH_BASE'] = (name == 'base').inspect
+            run "vagrant up #{name} --provision=#{options[:provision].inspect}"
+          end
+
+          def destroy(name)
+            run "vagrant destroy #{name}"
+          end
+
+          def package_box(name)
             run "rm -rf #{name}.box"
             run "vagrant package --base #{uuid}"
             run "mv package.box #{name}.box"
