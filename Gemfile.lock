@@ -5,33 +5,30 @@ GIT
     eventmachine (1.0.0.beta.4)
 
 GIT
-  remote: git://github.com/ruby-amqp/amq-client.git
-  revision: 5819c7b79be5ba94b62a7e28f4b7fd7b11ec6e51
-  specs:
-    amq-client (0.7.0.beta11.pre)
-      amq-protocol (>= 0.7.0.alpha7)
-      eventmachine
-
-GIT
-  remote: git://github.com/ruby-amqp/amq-protocol.git
-  revision: 6311dd861beba4e63c2688d040f37dc36b4870c2
-  specs:
-    amq-protocol (0.7.0.alpha8.pre)
-
-GIT
-  remote: git://github.com/ruby-amqp/amqp.git
-  revision: ab021a1304268fde88b2330f5e39f6a12af8fdd2
-  specs:
-    amqp (0.8.0.rc14.pre)
-      amq-client (>= 0.7.0.beta10)
-      amq-protocol (>= 0.7.0.alpha7)
-      eventmachine
-
-GIT
   remote: git://github.com/ruby-amqp/evented-spec.git
   revision: 8909cdb55604d42e6b48974782f49aa3ac4eca67
   specs:
     evented-spec (0.4.1)
+
+PATH
+  remote: vendor/amq-client
+  specs:
+    amq-client (0.7.0.beta14.pre)
+      amq-protocol (>= 0.8.0)
+      eventmachine
+
+PATH
+  remote: vendor/amq-protocol
+  specs:
+    amq-protocol (0.9.0.pre)
+
+PATH
+  remote: vendor/amqp
+  specs:
+    amqp (0.8.0.rc14.pre)
+      amq-client (>= 0.7.0.beta13)
+      amq-protocol (>= 0.8.0)
+      eventmachine
 
 GEM
   remote: http://rubygems.org/
