@@ -1,30 +1,23 @@
-redis:
-  url: redis://YOUR_REDIS_URL
+queue: rails
 shell:
-  buffer: 0.25
-reporter:
-  http:
-    # You get a Travis token on your application's profile page by signing in to your application via Github OAuth2.
-    url: "YOUR_GITHUB_USERNAME:YOUR_TRAVIS_TOKEN@YOUR_APP.heroku.com"
+  buffer: 1
+timeouts:
+  bundle: 600
+  before_script: 600
+  script: 7200
 vms:
-  count: 3
+  count: 5
   base: lucid32
-  memory: 1536
+  memory: 1024
   cookbooks: 'vendor/cookbooks/vagrant_base'
   json:
     rvm:
       rubies:
-        - 1.8.6
         - 1.8.7
-        - 1.8.7-p174
-        - 1.8.7-p249
         - 1.9.2
-        - 1.9.1-p378
-        - jruby
-        - rbx
-        - rbx-2.0.0pre
-        - ree
         - ruby-head
+      default:
+        - ruby-1.8.7
       gems:
         - bundler
         - rake
@@ -40,28 +33,22 @@ vms:
     - travis_build_environment
     - apt
     - build-essential
-    - scons
     - networking_basic
     - openssl
+    - scons
     - sysctl
     - libyaml # libyaml MUST be installed before rubies. MK.
     - emacs::nox
     - vim
     - timetrap
     - git
-    - java::openjdk
-    - libqt4
     - libv8
     - nodejs
     - rvm
     - rvm::multi
     - sqlite
-    - postgresql::client
-    - postgresql::server
-    - redis
+    # - postgresql::client
+    # - postgresql::server
     - mysql::client
-    - mysql::server
-    - mongodb
+    - mysql::server_on_ramfs
     - memcached
-    - rabbitmq
-    - imagemagick
