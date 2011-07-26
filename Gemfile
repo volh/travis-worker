@@ -7,9 +7,9 @@ platforms :ruby_18 do
   gem 'SystemTimer'
 end
 
-gem 'vagrant',       "0.7.7"
+# gem 'vagrant',       "0.7.7"
 # gem 'vagrant',      :git => 'git://github.com/mitchellh/vagrant.git'
-# gem 'vagrant',       "~>  0.8.2"
+gem 'vagrant',       "~>  0.8.2"
 
 gem 'net-ssh'
 gem 'net-ssh-shell', '~> 0.2.0'
