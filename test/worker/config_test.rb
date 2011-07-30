@@ -29,11 +29,12 @@ class WorkerConfigTest < Test::Unit::TestCase
     File.stubs(:exists?).returns(true)
     File.stubs(:exists?).with('./config/worker.yml').returns(true)
 
-    Config.any_instance.stubs(:read_yml).with('./config/worker.yml').returns('env' => 'staging')
-    Config.any_instance.stubs(:read_yml).with('./config/worker.staging.yml').returns('foo' => 'foo')
+    Config.any_instance.stubs(:read_yml).with('./config/worker.yml').returns('env' => 'staging', 'staging' => { 'foo' => 'foo' })
+    Config.any_instance.stubs(:read_yml).with('./config/worker.staging.yml').returns('bar' => 'bar')
 
     assert_equal 'staging', Config.new.read['env']
     assert_equal 'foo', Config.new.read['foo']
+    assert_equal 'bar', Config.new.read['bar']
   end
 
   test 'before_script timeout defaults to 120' do
@@ -68,4 +69,11 @@ class WorkerConfigTest < Test::Unit::TestCase
     assert_equal false, config.vms.recipes?
   end
 
+  test 'vms includes the Vms module' do
+    File.stubs(:exists?).returns(true)
+    Config.any_instance.stubs(:read_yml).returns({ 'vms' => { 'count' => 5 } })
+    config = Config.new
+    assert config.vms.meta_class.included_modules.include?(Config::Vms)
+    assert_equal 5, config.vms.count
+  end
 end

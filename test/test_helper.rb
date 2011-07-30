@@ -7,6 +7,8 @@ rescue LoadError => e
 end
 require 'bundler/setup'
 
+Bundler.setup(:default, :test)
+
 require 'test/unit'
 require 'test_declarative'
 require 'mocha'

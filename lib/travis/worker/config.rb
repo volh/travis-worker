@@ -1,4 +1,5 @@
 require 'yaml'
+require 'hashr'
 
 module Travis
   module Worker
@@ -17,19 +18,16 @@ module Travis
         end
       end
 
-      default :queue    => 'builds',
-              :amqp     => { :username => 'guest', :password => 'guest', :host => 'localhost', :vhost => 'travis' },
-              :redis    => { :url => nil },
-              :reporter => { :http => { :url => nil } },
-              :shell    => { :buffer => 0 },
-              :timeouts => { :before_script => 120, :after_script => 120, :script => 600, :bundle => 300 },
-              :vms      => { :count => 1, :base => 'lucid32', :memory => 1536, :cookbooks => 'vendor/cookbooks', :log_level => 'info', :json => {} }
+      define :queue    => 'builds',
+             :amqp     => { :username => 'guest', :password => 'guest', :host => 'localhost', :vhost => 'travis' },
+             :redis    => { :url => nil },
+             :reporter => { :http => { :url => nil } },
+             :shell    => { :buffer => 0 },
+             :timeouts => { :before_script => 120, :after_script => 120, :script => 600, :bundle => 300 },
+             :vms      => { :count => 1, :base => 'lucid32', :memory => 1536, :cookbooks => 'vendor/cookbooks', :log_level => 'info', :json => {}, :_include => Vms }
 
       def initialize
         super(read)
-        class << self.vms
-          include Vms
-        end
       end
 
       protected
@@ -37,8 +35,10 @@ module Travis
         LOCATIONS = ['./config/', '~/.']
 
         def read
-          base = read_yml(path)
-          base.key?('env') ? read_yml(path(base['env'])).merge(base) : base
+          local = read_yml(path)
+          env   = local['env']
+          local = local[env] || {}
+          read_yml(path(env)).merge(local.merge('env' => env))
         end
 
         def read_yml(path)

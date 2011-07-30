@@ -2,7 +2,6 @@ require "travis/worker/version"
 
 require 'resque'
 require 'resque/heartbeat'
-require 'hashie'
 require 'travis/worker/core_ext/ruby/hash/deep_symbolize_keys'
 require 'socket'
 
@@ -13,7 +12,6 @@ module Travis
     autoload :Application,     'travis/worker/application'
     autoload :BuildDispatcher, 'travis/worker/build_dispatcher'
     autoload :Config,          'travis/worker/config'
-    autoload :Hashr,           'travis/worker/hashr'
     autoload :Job,             'travis/worker/job'
     autoload :Reporter,        'travis/worker/reporter'
     autoload :Shell,           'travis/worker/shell'
